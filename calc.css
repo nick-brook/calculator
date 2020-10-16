@@ -6,11 +6,13 @@
 #calc {
     max-width: 300px;
     background-color: rgb(243, 243, 243);
+    border-style:solid;
+    border-radius: 10px;
 }
 
 
 .dispbox{border-width: 3px;
-        border-color:rgb(35, 141, 31);
+        border-color:black;
          border-style: ridge;
         margin-bottom: 20px;
         margin-right:7px;
@@ -54,3 +56,5 @@ button{width:23%;
 .btneq{background-color:rgb(255, 142, 37);
    
 }
+
+h6{text-align: center;}
