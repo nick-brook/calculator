@@ -1,35 +1,67 @@
 var formula = "";
 var answer = 0;
 
-
 function updateFormula(digit) {
 
-// check no multiple zeros at start
+// if formula has previous operator do checks on 
 
-if (formula === "0" && digit === "0"){
-    return
+// set regex to look for operators
+    var regex = /\+|\-|\*|\//;
+    var chk = formula.search(regex);
+    
+// if formula doesn't contain an operator
+
+    if (chk === -1){
+        formula = handleZeroDec(digit,formula);
+    }
+// formula does have an operator
+    else{
+// get the part of string after the last operator
+        var subForm = formula.slice(chk + 1,formula.length);
+    
+        formula = formula.slice(0,chk +1) + handleZeroDec(digit,subForm);
+    }
+    
+    updateDisp(answer,formula)
 }
 
-// if zero already entered remove leading zero
-if (formula === "0" && digit !=== "0"){
-    formula = formula.slice(1,formula.length)
-}
+function handleZeroDec(digit,chkStr) {
 
-// check if decimal already in formula and new decimal not input
-     
-        if (formula.indexOf(".") === -1 ){
-      
-            formula = formula + digit;
-            updateDisp(0,formula)
+// if number starts with zero 
+    if (chkStr === "0" ){   
+    // and a zero is entered return same string
+        if (digit === "0"){
+            return chkStr
         }
+// if zero already entered return "0." otherwise return digit
         else {
-                // check not an extra decimal
-                if (digit !== "."){
-                    formula = formula + digit;
-                    updateDisp(0,formula)}
+            if (digit === "."){
+                return chkStr + digit
+                }
+                else {
+                    return digit
+                }
+            }
+        }
+
+// check if decimal not in string then add
+    if (chkStr.indexOf(".") === -1 ){
+            return chkStr + digit;
+         }
+
+    else {
+// check not an extra decimal
+        if (digit !== "."){
+            return chkStr + digit;
+            }
+        else {
+            return chkStr
+            }
         }
 }
-          
+
+
+
 
 function backSpace(){
     formula = formula.slice(0,formula.length - 1)
@@ -37,12 +69,11 @@ function backSpace(){
 }
 
 
-// initialize dispaly and formula
+// initialize display and formula
 function initialize() {
-
     formula = "";
-    answer = 0
-    updateDisp(answer,formula)
+    answer = 0;
+    updateDisp(0,"")
 }
 
 // update display 
@@ -55,5 +86,8 @@ function updateDisp(ans,wrk) {
 // calculate answer 
 function calculate() {
 
- 
+   
+    answer = eval(formula);
+    updateDisp(answer,formula)
+
 }
