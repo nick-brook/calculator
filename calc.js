@@ -3,26 +3,58 @@ var answer = 0;
 
 function updateFormula(digit) {
 
-// if formula has previous operator do checks on 
 
 // set regex to look for operators
-    var regex = /\+|\-|\*|\//;
-    var chk = formula.search(regex);
+    const regex = new RegExp(/\+|\-|\*|\//);
+    
+    //  find last operator in string
+    var chk = regex.test(formula);
     
 // if formula doesn't contain an operator
 
-    if (chk === -1){
+    if (!chk){
         formula = handleZeroDec(digit,formula);
     }
 // formula does have an operator
     else{
-// get the part of string after the last operator
-        var subForm = formula.slice(chk + 1,formula.length);
-    
-        formula = formula.slice(0,chk +1) + handleZeroDec(digit,subForm);
+
+// get the index of the last operator
+        var subForm = "";
+        var i = getnum();
+
+        // if operator is last char 
+        if (i === formula.length - 1){
+            formula = handleZeroDec(digit,formula);
+        }
+
+        else {
+            subForm = formula.slice(i+1);
+            
+       // new formula is slice of formula incl index and concat sub formula
+            formula = formula.slice(0,i+1) + handleZeroDec(digit,subForm);
+            }
+
+        
     }
     
     updateDisp(answer,formula)
+}
+
+// function to return the index of the last operator
+function getnum(){
+    const indexRegex = new RegExp(/\+|\-|\*|\/|\./);
+    var j = formula.length -1;
+
+    for (j; j >= 0; j--){
+        // get last charcater in string
+        var chkchar = formula.substring(j,j + 1)
+        // check if character is operator or decimal
+            if (indexRegex.test(chkchar)){
+                return j
+            }
+    }
+
+    return 0
 }
 
 function handleZeroDec(digit,chkStr) {
