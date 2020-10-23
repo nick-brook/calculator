@@ -33,6 +33,9 @@
 #iddisp{border:none;
         border-top-style: solid;
         border-top-width: 1px;
+        min-height: 25px;
+        overflow: auto;
+        overflow-x: hidden;
         }
 
 button{width:23%;
