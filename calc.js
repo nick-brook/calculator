@@ -1,16 +1,18 @@
 var formula = "";
 var answer = 0;
+
 // set regex to look for operators
 const regex = new RegExp(/\+|\-|\*|\//);
 
 function updateFormula(digit) {
 
-    //  find last operator in string
+    //  does formula have an operator ?
     var chk = regex.test(formula);
     
 // if formula doesn't contain an operator
     if (!chk){
         formula = handleDigit(digit,formula);
+        updateDisp(answer,formula)
         }
     else{
         // get the index of the last operator
@@ -20,9 +22,19 @@ function updateFormula(digit) {
          if (multiOp(formula,digit)){
             formula = formula.slice(0,i+1) + handleDigit(digit,formula.slice(i+1));
             }
+
+        // if digit is an operator don't recalculate - just update display
+   
+        if (regex.test(digit)){
+            updateDisp(answer,formula)
+            }
+        else{
+            // recalculate
+            calculate(false)
+            }
+
         }   
     
-    updateDisp(answer,formula)
 }
 
 
@@ -82,7 +94,6 @@ function multiOp(formula,digit){
                             return false
                         break;
                     }
-
             }
         else {
             return true
@@ -115,6 +126,11 @@ function getnum(){
 
 // function handles input of new digit
 function handleDigit(digit,chkStr) {
+
+    // if digit is an operator and last char of forumla is . delete .
+    if (regex.test(digit) && chkStr.slice(chkStr.length - 1) === "."){
+        chkStr = chkStr.slice(formula.legth -1)
+        }
 
 // switch statement for digit
     switch(digit) {
@@ -171,10 +187,14 @@ function updateDisp(ans,wrk) {
 }
 
 // calculate answer 
-function calculate() {
+function calculate(x) {
+  
   
     answer = parseFloat(eval(formula));
     
+
+
+        
 
 // set answer to exp if v large or small 
     if(answer >= 1000000000000 || answer <= -1000000000000 || (answer <= 0.00001 && answer >= -0.00001 && answer !== 0)){
@@ -183,24 +203,29 @@ function calculate() {
    else {
         // max 8 decimal places
          answer = answer.toFixed(8);
+        
           // set to max 10 decimals (convert answer back to a number datatype)
          answer = Number(answer).toPrecision(10);
          
-
-     // format large +ve and negative 
-     if (answer > 999 || answer < -999){
-        answer = new Intl.NumberFormat().format(answer)
-
-     }
         // remove rounding anomalies
         answer = (answer *1000) / 1000;
-        
-   
 
+         // format large +ve and negative 
+        if (answer > 999 || answer < -999){
+            answer = new Intl.NumberFormat().format(answer)
+            }
         }
-
-    updateDisp(answer,formula);
-
+        
+    // final answer (== button hit)
+    if (x == true) {
+        formula = answer;
+        updateDisp(answer,"");
+        answer = 0;
+        }
+    else {
+        // running calculation
+         updateDisp(answer,formula);
+        }
 }
 
 function expo(x, f) {
