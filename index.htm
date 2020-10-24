@@ -39,8 +39,11 @@
 
     <script>
         $(document).ready(function() {
-
+          $("#per").hide();
+          $("#x").hide();
             initialize();
+            
+      
 
         });
     </script>
@@ -65,8 +68,8 @@
 
             <div class=" mb-2">
                 <button  class="btnclr" id="Q" onclick="initialize()">A/C</button>
-                <button type="button" class="btnop" id="percentage" onclick="updateFormula(this.id)">%</button>
-                <button type="button" class="btnop" id="sign" onclick="updateFormula(this.id)">+/-</button>
+                <button type="button" class="btspecial" id="per" onclick="updateFormula(this.id)">%</button>
+                <button type="button" class="btspecial" id="x" onclick="updateFormula(this.id)">+/-</button>
                 <button type="button" class="btnop" id="/" onclick="updateFormula(this.id)">/</button>
             </div>
 
